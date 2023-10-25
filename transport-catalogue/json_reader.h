@@ -27,7 +27,7 @@ public:
 
     size_t ReadJson(std::istream& input);
 
-    size_t ReadJson_FillTransportCatalogue(std::istream& input);
+    size_t ReadAndExecute(std::istream& input);
     size_t QueryTC_WriteJsonToStream(std::ostream& out);
 
     size_t ReadJson_QueryTC_WriteJsonToStream(std::istream & input, std::ostream& out);

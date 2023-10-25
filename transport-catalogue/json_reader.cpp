@@ -16,14 +16,13 @@ size_t JsonReader::ReadJson(std::istream& input) {
     return result;
 }
 
-size_t JsonReader::ReadJson_FillTransportCatalogue(std::istream& input) {
-    size_t check_num = ReadJson(input);
-    if (check_num == 0) return check_num;
-
+size_t JsonReader::ReadAndExecute(std::istream& input) {
+    if (ReadJson(input)) {
+        return 0;
+    }
     size_t result = ParseJsonToRawData();
-
+    
     FillTransportCatalogue();
-
     return result;
 }
 
