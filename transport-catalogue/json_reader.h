@@ -26,11 +26,9 @@ public:
     }
 
     size_t ReadJson(std::istream& input);
+    size_t WriteJsonToStream(std::ostream& out);
 
-    size_t ReadAndExecute(std::istream& input);
-    size_t QueryTC_WriteJsonToStream(std::ostream& out);
-
-    size_t ReadJson_QueryTC_WriteJsonToStream(std::istream & input, std::ostream& out);
+    size_t ReadAndExecute(std::istream& input, std::ostream& out);
 
     [[nodiscard]] RendererSettings GetRendererSetting() const;
 

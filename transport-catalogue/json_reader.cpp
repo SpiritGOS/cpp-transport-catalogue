@@ -16,13 +16,14 @@ size_t JsonReader::ReadJson(std::istream& input) {
     return result;
 }
 
-size_t JsonReader::ReadAndExecute(std::istream& input) {
+size_t JsonReader::ReadAndExecute(std::istream& input, std::ostream& out) {
     if (ReadJson(input)) {
         return 0;
     }
     size_t result = ParseJsonToRawData();
     
     FillTransportCatalogue();
+    WriteJsonToStream(out);
     return result;
 }
 
@@ -166,7 +167,7 @@ bool JsonReader::FillTransportCatalogue() {
     return true;
 }
 
-size_t JsonReader::QueryTC_WriteJsonToStream(std::ostream& out) {
+size_t JsonReader::WriteJsonToStream(std::ostream& out) {
     const auto& root_node = root_.back().GetRoot();
     if (!root_node.IsMap()) {
         throw json::ParsingError(
@@ -193,12 +194,6 @@ size_t JsonReader::QueryTC_WriteJsonToStream(std::ostream& out) {
     json::PrintNode(json::Node{result}, out);
 
     return result.size();
-}
-
-size_t JsonReader::ReadJson_QueryTC_WriteJsonToStream(std::istream& input,
-                                                      std::ostream& out) {
-    ReadJson(input);
-    return QueryTC_WriteJsonToStream(out);
 }
 
 json::Node JsonReader::ProcessOneUserRequestNode(
