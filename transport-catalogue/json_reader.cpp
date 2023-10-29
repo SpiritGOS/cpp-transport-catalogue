@@ -1,5 +1,7 @@
 #include "json_reader.h"
 
+using namespace std::literals;
+
 size_t JsonReader::ReadJson(std::istream& input) {
     size_t result = 0;
 
@@ -17,7 +19,7 @@ size_t JsonReader::ReadJson(std::istream& input) {
 }
 
 size_t JsonReader::ReadAndExecute(std::istream& input, std::ostream& out) {
-    if (ReadJson(input)) {
+    if (!ReadJson(input)) {
         return 0;
     }
     size_t result = ParseJsonToRawData();
@@ -61,7 +63,6 @@ size_t JsonReader::ParseJsonToRawData() {
 }
 
 BaseRequest JsonReader::ParseAddDataNode(const json::Node& node) const {
-    using namespace std::literals;
     using namespace transport_catalogue;
     if (!node.IsMap()) return {};
     const json::Dict& dict = node.AsMap();
@@ -136,7 +137,6 @@ bool JsonReader::FillTransportCatalogue() {
             bool pairOK = transport_catalogue_.SetDistanceBetweenStops(
                 stop.stop_name, other, distance);
             if (!pairOK) {
-                using namespace std::literals;
                 std::cerr << "ERROR while adding distance to stop pair of "s
                           << stop.stop_name << " and "s << other << "."
                           << std::endl;
@@ -145,7 +145,6 @@ bool JsonReader::FillTransportCatalogue() {
     }
 
     for (auto& route : raw_buses_) {
-        using namespace std::literals;
 
         if (route.route_stops.size() < 2) {
             std::cerr << "Error while adding bus routes for bus: "s
@@ -181,24 +180,24 @@ size_t JsonReader::WriteJsonToStream(std::ostream& out) {
             "Error reading JSON data with user requests to database.");
     }
 
-    json::Array result;
+    json::Builder builder;
+    builder.StartArray();
     for (const json::Node& node : iter->second.AsArray()) {
         if (!node.IsMap()) {
             throw json::ParsingError(
                 "Error reading JSON data with user requests to database. One "
                 "of nodes is not a dictionary.");
         }
-
-        result.emplace_back(std::move(ProcessOneUserRequestNode(node)));
+        builder.Value(std::move(ProcessOneUserRequestNode(node)));
     }
-    json::PrintNode(json::Node{result}, out);
+    json::Node res_node = builder.EndArray().Build();
+    json::PrintNode(res_node, out);
 
-    return result.size();
+    return res_node.AsArray().size();
 }
 
 json::Node JsonReader::ProcessOneUserRequestNode(
     const json::Node& user_request) {
-    using namespace std::literals;
     using namespace transport_catalogue;
 
     if (!user_request.IsMap()) {
@@ -286,8 +285,6 @@ json::Node JsonReader::ProcessOneUserRequestNode(
 }
 
 RendererSettings JsonReader::GetRendererSetting() const {
-    using namespace std::literals;
-
     const auto& root_node = root_.back().GetRoot();
     if (!root_node.IsMap()) {
         throw json::ParsingError(
@@ -449,10 +446,7 @@ svg::Color ParseColor(const json::Node& node) {
 }
 
 inline json::Node GetErrorNode(int id) {
-    using namespace std::literals;
-    json::Dict result;
-    result.emplace("request_id"s, id);
-    result.emplace("error_message"s, "not found"s);
-
-    return {result};
+    return json::Builder().StartDict().Key("request_id"s).Value(id)
+                .Key("error_message"s).Value("not found"s).EndDict()
+                .Build();
 }

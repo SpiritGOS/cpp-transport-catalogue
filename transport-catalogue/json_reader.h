@@ -1,10 +1,12 @@
 #pragma once
 
 #include "json.h"
+#include "json_builder.h"
 #include "transport_catalogue.h"
 #include "map_renderer.h"
 #include "domain.h"
 #include <vector>
+#include <sstream>
 
 const std::string BASE_DATA = "base_requests";
 const std::string USER_REQUESTS = "stat_requests";
