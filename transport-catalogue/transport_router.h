@@ -74,8 +74,6 @@ namespace route {
 
 		TransportRouter(const transport_catalogue::TransportCatalogue& tc, RoutingSettings settings);
 		[[nodiscard]] std::optional<ResponseData> BuildRoute(std::string_view from, std::string_view to) const;
-		void SetSettings(RoutingSettings settings);
-		void Update();
 	private:
 		void BuildVerticesForStops(const std::set<std::string_view>& stops);
 		void AddBusRouteEdges(const transport_catalogue::BusRoute& bus_info);

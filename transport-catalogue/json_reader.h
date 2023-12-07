@@ -44,7 +44,7 @@ using BaseRequest = std::variant<std::monostate, transport_catalogue::StopWithDi
 
 class JsonReader {
 public:
-    explicit JsonReader(transport_catalogue::TransportCatalogue& tc) : transport_catalogue_(tc), transport_router_(tc, {}) {
+    explicit JsonReader(transport_catalogue::TransportCatalogue& tc) : transport_catalogue_(tc) {
     }
 
     size_t ReadJson(std::istream& input);
@@ -57,7 +57,7 @@ public:
 
 private:
     transport_catalogue::TransportCatalogue& transport_catalogue_;
-    route::TransportRouter transport_router_;
+    std::unique_ptr<route::TransportRouter> transport_router_{ nullptr };
     std::vector<json::Document> root_;
     std::vector<transport_catalogue::StopWithDistances> raw_stops_;
     std::vector<BusRouteJson> raw_buses_;

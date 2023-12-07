@@ -184,7 +184,7 @@ bool JsonReader::FillTransportCatalogue() {
     } else {
         throw json::ParsingError("Error reading json data with routing settings.");
     }
-    transport_router_.SetSettings(settings);
+    transport_router_ = std::make_unique<route::TransportRouter>(transport_catalogue_, settings);
 
     return true;
 }
@@ -271,8 +271,7 @@ json::Node JsonReader::ProcessOneUserRequestNode(
         from = from_i->second.AsString();
         to = to_i->second.AsString();
 
-        transport_router_.Update();
-        auto route = transport_router_.BuildRoute(from, to);
+        auto route = transport_router_->BuildRoute(from, to);
         json::Dict result;
 
         result.emplace("request_id"s, id);

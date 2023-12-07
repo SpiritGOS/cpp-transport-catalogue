@@ -26,18 +26,6 @@ namespace route {
 		return result;
 	}
 
-	void TransportRouter::SetSettings(RoutingSettings settings)
-	{
-		settings_ = settings;
-	}
-
-	void TransportRouter::Update()
-	{
-		BuildVerticesForStops(catalogue_.GetAllStops());
-		BuildRoutesGraph(catalogue_.GetAllBuses());
-		router_ = std::make_unique<Router>(*routes_);
-	}
-
 	void TransportRouter::BuildVerticesForStops(const std::set<std::string_view>& stops)
 	{
 		graph::VertexId start{ 0 };
