@@ -9,7 +9,7 @@
 #include "transport_catalogue.h"
 
 using namespace std::literals;
-namespace navigation {
+namespace transport_catalogue {
     namespace input {
         struct Request {
             int priority = 0;
@@ -17,7 +17,7 @@ namespace navigation {
             std::string args;
         };
 
-        void ReadInputRequests(std::istream &is, navigation::TransportCatalogue& tc);
-        void ProcessInputRequests(navigation::TransportCatalogue& tc, std::vector<Request>& query);
+        void ReadInputRequests(std::istream &is, transport_catalogue::TransportCatalogue& tc);
+        void ProcessInputRequests(transport_catalogue::TransportCatalogue& tc, std::vector<Request>& query);
     }
 }

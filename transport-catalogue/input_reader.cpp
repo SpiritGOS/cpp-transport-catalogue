@@ -1,6 +1,6 @@
 #include "input_reader.h"
 
-namespace navigation {
+namespace transport_catalogue {
     namespace input {
         void ReadInputRequests(std::istream& is, TransportCatalogue& tc) {
             std::vector<Request> query;

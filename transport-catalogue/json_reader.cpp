@@ -1,4 +1,4 @@
-#include "json_reader.h"
+﻿#include "json_reader.h"
 
 using namespace std::literals;
 
@@ -163,6 +163,29 @@ bool JsonReader::FillTransportCatalogue() {
         transport_catalogue_.AddBus(br);
     }
 
+    route::RoutingSettings settings;
+    const auto& root_node = root_.back().GetRoot();
+    const json::Dict& dict = root_node.AsMap();
+    auto iter = dict.find(ROUTING_SETTINGS);
+    if (iter == dict.end() || !iter->second.IsMap()) {
+        throw json::ParsingError("Error reading json data with routing settings.");
+    }
+    auto routing_settings_map = iter->second.AsMap();
+    if (const auto bus_wait_time = routing_settings_map.find("bus_wait_time"s);
+        bus_wait_time != routing_settings_map.end() && bus_wait_time->second.IsInt()) {
+        settings.bus_wait_time = bus_wait_time->second.AsInt();
+    } else {
+        throw json::ParsingError("Error reading json data with routing settings.");
+    }
+
+    if (const auto bus_velocity = routing_settings_map.find("bus_velocity"s);
+        bus_velocity != routing_settings_map.end() && bus_velocity->second.IsInt()) {
+        settings.bus_velocity = bus_velocity->second.AsInt();
+    } else {
+        throw json::ParsingError("Error reading json data with routing settings.");
+    }
+    transport_router_.SetSettings(settings);
+
     return true;
 }
 
@@ -237,15 +260,44 @@ json::Node JsonReader::ProcessOneUserRequestNode(
 
         return {result};
     }
+    if (type == "Route"s) {
+        const auto from_i = request_fields.find("from"s);
+        const auto to_i = request_fields.find("to"s);
+        std::string from, to;
+        if (from_i == request_fields.end() || !from_i->second.IsString() || to_i == request_fields.end() || !to_i->second.IsString()) {
+            throw json::ParsingError("Error reading JSON data with user requests to database. One of node's fields is crippled.");
+        }
 
+        from = from_i->second.AsString();
+        to = to_i->second.AsString();
+
+        transport_router_.Update();
+        auto route = transport_router_.BuildRoute(from, to);
+        json::Dict result;
+
+        result.emplace("request_id"s, id);
+        if (route.has_value()) {
+            result.emplace("total_time"s, route.value().total_time);
+            json::Array items;
+            for (const auto& part : route.value().items) {
+                json::Dict node;
+                std::visit(RouteVistor{node}, part);
+                items.push_back(node);
+            }
+            result.emplace("items"s, std::move(items));
+        }
+        else {
+            result.emplace("error_message"s, "not found"s);
+        }
+
+        return { result };
+    }
     std::string name;
     if (const auto name_i = request_fields.find("name"s);
         name_i != request_fields.end() && name_i->second.IsString()) {
         name = name_i->second.AsString();
     } else
-        throw json::ParsingError(
-            "Error reading JSON data with user requests to database. One of "
-            "node's fields is crippled.");
+        throw json::ParsingError("Error reading JSON data with user requests to database. One of node's fields is crippled.");
 
     if (type == "Bus"s) {
         BusInfo bi = transport_catalogue_.GetBusInfo(name);
@@ -283,6 +335,7 @@ json::Node JsonReader::ProcessOneUserRequestNode(
         "Error reading JSON data with user requests to database. Node's type "
         "field contains invalid data.");
 }
+
 
 RendererSettings JsonReader::GetRendererSetting() const {
     const auto& root_node = root_.back().GetRoot();

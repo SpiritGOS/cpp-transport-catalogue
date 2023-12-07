@@ -166,4 +166,18 @@ TransportCatalogue::GetAllStopsIndex() const {
     return result;
 }
 
+const std::set<std::string_view> TransportCatalogue::GetAllStops() const
+{
+    std::set<std::string_view> stops;
+    for (const auto& stop : stops_) {
+        stops.emplace(stop.stop_name);
+    }
+    return stops;
+}
+
+const std::deque<BusRoute>& TransportCatalogue::GetAllBuses() const
+{
+    return bus_routes_;
+}
+
 }  // namespace transport_catalogue

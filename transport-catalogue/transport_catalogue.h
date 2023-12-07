@@ -50,7 +50,8 @@ public:
     int GetDistanceBetweenStops(std::string_view stop, std::string_view other_stop) const;
     const std::map<std::string_view, const BusRoute*> GetAllRoutesIndex() const;
     const std::map<std::string_view, const Stop*> GetAllStopsIndex() const;
-
+    const std::set<std::string_view> GetAllStops() const;
+    const std::deque<BusRoute>& GetAllBuses() const;
 private:
     std::deque<Stop> stops_;
     std::unordered_map<std::string_view, const Stop*> stops_index_;
