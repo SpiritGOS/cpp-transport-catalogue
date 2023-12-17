@@ -1,52 +1,31 @@
 #pragma once
-#include <string>
+
 #include "geo.h"
+
+#include <string>
 #include <vector>
 #include <set>
-#include <string_view>
+#include <unordered_map>
 
-namespace transport_catalogue {
+namespace transport {
 
-    struct Stop {
-        std::string stop_name;
-        geo::Coordinates coordinates;
-    };
+struct Stop {
+    std::string name;
+    geo::Coordinates coordinates;
+    std::set<std::string> buses_by_stop;
+};
 
-    struct StopDistanceData {
-        std::string other_stop_name;
-        size_t distance;
-    };
+struct Bus {
+    std::string number;
+    std::vector<const Stop*> stops;
+    bool is_circle;
+};
 
-    struct StopWithDistances : Stop {
-        std::vector<StopDistanceData> distances;
-    };
+struct BusStat {
+    size_t stops_count;
+    size_t unique_stops_count;
+    double route_length;
+    double curvature;
+};
 
-    const Stop EMPTY_STOP{};
-
-    enum RouteType {
-        NOT_SET,
-        CIRCLE_ROUTE,
-        RETURN_ROUTE
-    };
-
-    struct BusRoute {
-        std::string bus_name;
-        RouteType type;
-        std::vector<const Stop *> route_stops;
-    };
-
-    const BusRoute EMPTY_BUS_ROUTE{};
-    const std::set<std::string_view> EMPTY_BUS_ROUTE_SET{};
-
-    struct BusInfo {
-        std::string_view bus_name;
-        RouteType type;
-        size_t stops_number;
-        size_t unique_stops;
-        size_t route_length;
-        double curvature;
-    };
-
-    std::ostream &operator<<(std::ostream &os, const BusInfo &bus_info);
-
-}
+} // namespace transport

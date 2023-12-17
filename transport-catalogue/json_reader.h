@@ -1,73 +1,40 @@
 #pragma once
 
 #include "json.h"
-#include "json_builder.h"
 #include "transport_catalogue.h"
-#include "transport_router.h"
 #include "map_renderer.h"
-#include "domain.h"
-#include "graph.h"
-#include <vector>
-#include <sstream>
+#include "request_handler.h"
 
-using namespace std::literals;
-
-const std::string BASE_DATA = "base_requests";
-const std::string USER_REQUESTS = "stat_requests";
-const std::string RENDER_SETTINGS = "render_settings";
-const std::string ROUTING_SETTINGS = "routing_settings";
-
-struct BusRouteJson {
-    std::string bus_name;
-    transport_catalogue::RouteType type;
-    std::vector<std::string> route_stops;
-};
-
-struct RouteVistor {
-    json::Dict& json;
-
-    void operator()(const route::WaitResponse& resp) {
-        json.emplace("type"s, resp.type);
-        json.emplace("stop_name"s, resp.stop_name);
-        json.emplace("time"s, resp.time);
-    }
-    void operator()(const route::BusResponse& resp) {
-        json.emplace("type"s, resp.type);
-        json.emplace("bus"s, resp.bus);
-        json.emplace("span_count"s, resp.stop_count);
-        json.emplace("time"s, resp.time);
-    }
-};
-
-using BaseRequest = std::variant<std::monostate, transport_catalogue::StopWithDistances, BusRouteJson>;
-
+#include <iostream>
 
 class JsonReader {
 public:
-    explicit JsonReader(transport_catalogue::TransportCatalogue& tc) : transport_catalogue_(tc) {
-    }
+    JsonReader(std::istream& input)
+        : input_(json::Load(input))
+    {}
 
-    size_t ReadJson(std::istream& input);
-    size_t WriteJsonToStream(std::ostream& out);
+    const json::Node& GetBaseRequests() const;
+    const json::Node& GetStatRequests() const;
+    const json::Node& GetRenderSettings() const;
+    const json::Node& GetRoutingSettings() const;
+    const json::Node& GetSerializationSettings() const;
 
-    size_t ReadAndExecute(std::istream& input, std::ostream& out);
+    void ProcessRequests(const json::Node& stat_requests, RequestHandler& rh) const;
 
-    [[nodiscard]] RendererSettings GetRendererSetting() const;
+    void FillCatalogue(transport::Catalogue& catalogue);
+    renderer::MapRenderer FillRenderSettings(const json::Node& settings) const;
+    transport::Router FillRoutingSettings(const json::Node& settings) const;
 
+    const json::Node PrintRoute(const json::Dict& request_map, RequestHandler& rh) const;
+    const json::Node PrintStop(const json::Dict& request_map, RequestHandler& rh) const;
+    const json::Node PrintMap(const json::Dict& request_map, RequestHandler& rh) const;
+    const json::Node PrintRouting(const json::Dict& request_map, RequestHandler& rh) const;
 
 private:
-    transport_catalogue::TransportCatalogue& transport_catalogue_;
-    std::unique_ptr<route::TransportRouter> transport_router_{ nullptr };
-    std::vector<json::Document> root_;
-    std::vector<transport_catalogue::StopWithDistances> raw_stops_;
-    std::vector<BusRouteJson> raw_buses_;
-    graph::DirectedWeightedGraph<double> graph_;
+    json::Document input_;
+    json::Node dummy_ = nullptr;
 
-    BaseRequest ParseAddDataNode(const json::Node& node) const;
-    size_t ParseJsonToRawData();
-    bool FillTransportCatalogue();
-    json::Node ProcessOneUserRequestNode(const json::Node& user_request);
+    std::tuple<std::string_view, geo::Coordinates, std::map<std::string_view, int>> FillStop(const json::Dict& request_map) const;
+    void FillStopDistances(transport::Catalogue& catalogue) const;
+    std::tuple<std::string_view, std::vector<const transport::Stop*>, bool> FillRoute(const json::Dict& request_map, transport::Catalogue& catalogue) const;
 };
-
-svg::Color ParseColor(const json::Node& node);
-inline json::Node GetErrorNode(int id);

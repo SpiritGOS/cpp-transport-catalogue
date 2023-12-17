@@ -11,7 +11,6 @@ namespace json {
 class Node;
 using Dict = std::map<std::string, Node>;
 using Array = std::vector<Node>;
-using Data = std::variant<std::nullptr_t, Array, Dict, bool, int, double, std::string>;
 
 class ParsingError : public std::runtime_error {
 public:
@@ -19,14 +18,11 @@ public:
 };
 
 class Node final
-    : public Data {
+    : private std::variant<std::nullptr_t, Array, Dict, bool, int, double, std::string> {
 public:
     using variant::variant;
     using Value = variant;
-    
-    Node(Value value) : Data(value) {
-        
-    }
+
     bool IsInt() const {
         return std::holds_alternative<int>(*this);
     }
@@ -92,12 +88,12 @@ public:
         return std::get<std::string>(*this);
     }
 
-    bool IsMap() const {
+    bool IsDict() const {
         return std::holds_alternative<Dict>(*this);
     }
-    const Dict& AsMap() const {
+    const Dict& AsDict() const {
         using namespace std::literals;
-        if (!IsMap()) {
+        if (!IsDict()) {
             throw std::logic_error("Not a dict"s);
         }
 
@@ -109,6 +105,10 @@ public:
     }
 
     const Value& GetValue() const {
+        return *this;
+    }
+
+    Value& GetValue() {
         return *this;
     }
 };
@@ -143,17 +143,4 @@ Document Load(std::istream& input);
 
 void Print(const Document& doc, std::ostream& output);
 
-template <typename Value>
-void PrintValue(const Value& value, std::ostream& out) {
-    out << value;
-}
-
-void PrintValue(const std::string& str, std::ostream& out);
-void PrintValue(std::nullptr_t, std::ostream& out);
-void PrintValue(bool val, std::ostream& out);
-void PrintValue(const Array& arr, std::ostream& out);
-void PrintValue(const Dict& dict, std::ostream& out);
-
-void PrintNode(const Node& node, std::ostream& out);
-
-}  // namespace json
+} // namespace json
