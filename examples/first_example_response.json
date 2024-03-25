@@ -1,0 +1,19 @@
+[
+    {
+        "items": [
+            {
+                "stop_name": "Komsomolskiy pr 20",
+                "time": 490,
+                "type": "Wait"
+            },
+            {
+                "bus": "99k",
+                "span_count": 10,
+                "time": 1250.83,
+                "type": "Bus"
+            }
+        ],
+        "request_id": 1607592307,
+        "total_time": 1740.83
+    }
+]
