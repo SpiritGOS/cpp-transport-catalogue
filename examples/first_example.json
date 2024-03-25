@@ -1,0 +1,384 @@
+{
+    "base_requests": [
+        {
+            "is_roundtrip": false,
+            "name": "99k",
+            "stops": [
+                "Vnukovo",
+                "Kiyevskoye sh 50",
+                "Kiyevskoye sh 60",
+                "Kiyevskoye sh 80",
+                "Kiyevskoye sh 100",
+                "Troparyovo",
+                "Luzhniki",
+                "Komsomolskiy pr 20",
+                "Komsomolskiy pr 80",
+                "Yandex",
+                "Kremlin",
+                "Mokhovaya ul 50",
+                "Mokhovaya ul 60",
+                "Manezh",
+                "Belorusskiy vokzal",
+                "Leningradskiy pr 20",
+                "Leningradskiy pr 60",
+                "Leningradskiy pr 80",
+                "Sokol",
+                "Khimki",
+                "Sheremetyevo"
+            ],
+            "type": "Bus"
+        },
+        {
+            "latitude": 55.572308,
+            "longitude": 37.58821,
+            "name": "Vnukovo",
+          "road_distances": {
+              "Kiyevskoye sh 100":737402,
+              "Kiyevskoye sh 50":224766,           
+              "Kiyevskoye sh 60":902131,        
+              "Kiyevskoye sh 80":805100,            
+              "Troparyovo":315031
+          },
+            "type": "Stop"
+          },
+        {
+            "latitude": 55.58939017171717,
+            "longitude": 37.58821,
+            "name": "Kiyevskoye sh 50",
+          "road_distances": {
+              "Kiyevskoye sh 100":324219, 
+              "Kiyevskoye sh 60":282245,
+              "Kiyevskoye sh 80":479166,
+              "Troparyovo":547802
+          },
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.592806606060606,
+            "longitude": 37.58821,
+            "name": "Kiyevskoye sh 60",
+          "road_distances": {
+
+            
+              "Kiyevskoye sh 100":
+              602778
+            ,
+            
+              "Kiyevskoye sh 80":
+              535966
+            ,
+            
+              "Troparyovo":
+              232275
+            
+          }
+            
+          ,
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.59963947474748,
+            "longitude": 37.58821,
+            "name": "Kiyevskoye sh 80",
+          "road_distances": {
+
+            
+              "Kiyevskoye sh 100":
+              160260
+            ,
+            
+              "Troparyovo":
+              836752
+            
+
+          } ,
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.60647234343434,
+            "longitude": 37.58821,
+            "name": "Kiyevskoye sh 100",
+          "road_distances": {
+            
+              "Troparyovo":
+              173788
+            
+          }
+               
+            ,
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.609888777777776,
+            "longitude": 37.58821,
+            "name": "Troparyovo",
+          "road_distances": {
+            "Luzhniki":
+            887456
+          },
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.64746955555555,
+            "longitude": 37.58821,
+            "name": "Luzhniki",
+          "road_distances": {
+            
+              "Komsomolskiy pr 20":
+              156200
+            ,
+            
+              "Komsomolskiy pr 80":
+              699119
+            ,
+            
+              "Yandex":
+              415895
+            
+          },
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.654302424242424,
+            "longitude": 37.58821,
+            "name": "Komsomolskiy pr 20",
+          "road_distances": {
+            
+              "Komsomolskiy pr 80":852222
+            ,
+            
+              "Yandex":438867
+            
+          },
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.67480103030303,
+            "longitude": 37.58821,
+            "name": "Komsomolskiy pr 80",
+          "road_distances": {
+            
+              "Yandex":
+              733075
+            
+          }
+               
+            ,
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.685050333333336,
+            "longitude": 37.58821,
+            "name": "Yandex",
+          "road_distances": {
+              "Kremlin":811470  
+          },
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.72263111111111,
+            "longitude": 37.58821,
+            "name": "Kremlin",
+          "road_distances": {
+            
+              "Manezh":279323,
+              "Mokhovaya ul 50":536791,   
+              "Mokhovaya ul 60":201055
+            
+          },
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.73971328282828,
+            "longitude": 37.58821,
+            "name": "Mokhovaya ul 50",
+          "road_distances": {
+            
+              "Manezh":
+              686991
+            ,
+            
+              "Mokhovaya ul 60":
+              309102
+            
+          }
+                
+            ,
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.74312971717172,
+            "longitude": 37.58821,
+            "name": "Mokhovaya ul 60",
+          "road_distances": {
+              "Manezh":91851
+          },
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.76021188888889,
+            "longitude": 37.58821,
+            "name": "Manezh",
+          "road_distances": {
+              "Belorusskiy vokzal":461914
+          },
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.797792666666666,
+            "longitude": 37.58821,
+            "name": "Belorusskiy vokzal",
+          "road_distances": {
+            
+              "Leningradskiy pr 20":
+              686447
+            ,
+            
+              "Leningradskiy pr 60":
+              596886
+            ,
+            
+              "Leningradskiy pr 80":
+              692102
+            ,
+            
+              "Sokol":
+              350970
+            
+          },
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.80462553535354,
+            "longitude": 37.58821,
+            "name": "Leningradskiy pr 20",
+          "road_distances": {
+            
+              "Leningradskiy pr 60":
+              926860
+            ,
+            
+              "Leningradskiy pr 80":
+              615161
+            ,
+            
+              "Sokol":
+              819473
+            
+          }
+                
+            ,
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.81829127272727,
+            "longitude": 37.58821,
+            "name": "Leningradskiy pr 60",
+          "road_distances": {
+            
+              "Leningradskiy pr 80":
+              427475
+            ,
+            
+              "Sokol":
+              459041
+            
+          }
+                
+            ,
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.82512414141414,
+            "longitude": 37.58821,
+            "name": "Leningradskiy pr 80",
+          "road_distances": {
+            
+              "Sokol":
+              438456
+            
+          }
+               
+            ,
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.83537344444445,
+            "longitude": 37.58821,
+            "name": "Sokol",
+          "road_distances": {
+              "Khimki":
+              588282
+          }
+               
+            ,
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.872954222222226,
+            "longitude": 37.58821,
+            "name": "Khimki",
+          "road_distances": {
+            
+              "Sheremetyevo":
+              108496
+            
+          }
+                
+            ,
+            "type": "Stop"
+        },
+        {
+            "latitude": 55.910535,
+            "longitude": 37.58821,
+            "name": "Sheremetyevo",
+            "road_distances": {},
+            "type": "Stop"
+        }
+    ],
+    "render_settings": {
+        "bus_label_font_size": 20,
+        "bus_label_offset": [
+            7,
+            15
+        ],
+        "color_palette": [
+            "green",
+            [
+                255,
+                160,
+                0
+            ],
+            "red"
+        ],
+        "height": 200,
+        "line_width": 14,
+        "padding": 30,
+        "stop_label_font_size": 20,
+        "stop_label_offset": [
+            7,
+            -3
+        ],
+        "stop_radius": 5,
+        "underlayer_color": [
+            255,
+            255,
+            255,
+            0.85
+        ],
+        "underlayer_width": 3,
+        "width": 200
+    },
+    "routing_settings": {
+        "bus_velocity": 280,
+        "bus_wait_time": 490
+    },
+    "stat_requests": [
+        {
+            "from": "Komsomolskiy pr 20",
+            "id": 1607592307,
+            "to": "Leningradskiy pr 80",
+            "type": "Route"
+        }
+    ]
+}
